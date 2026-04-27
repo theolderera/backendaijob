@@ -37,6 +37,12 @@ export class User {
   @Column({ type: 'varchar', default: UserRole.Candidate })
   role: UserRole;
 
+  @Column({ type: 'varchar', nullable: true })
+  passwordResetToken: string | null;
+
+  @Column({ type: 'datetime', nullable: true })
+  passwordResetExpires: Date | null;
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -31,6 +31,8 @@ let User = class User {
     phoneNumber;
     passwordHash;
     role;
+    passwordResetToken;
+    passwordResetExpires;
     createdAt;
     updatedAt;
     profile;
@@ -67,6 +69,14 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', default: UserRole.Candidate }),
     __metadata("design:type", String)
 ], User.prototype, "role", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", Object)
+], User.prototype, "passwordResetToken", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'datetime', nullable: true }),
+    __metadata("design:type", Object)
+], User.prototype, "passwordResetExpires", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

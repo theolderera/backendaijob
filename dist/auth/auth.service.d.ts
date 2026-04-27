@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { User } from '../users/entities/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { EmailService } from './email.service';
 export interface TokenPair {
     token: string;
     refreshToken: string;
@@ -12,12 +13,15 @@ export declare class AuthService {
     private readonly userRepo;
     private readonly jwtService;
     private readonly configService;
+    private readonly emailService;
     private refreshTokens;
-    constructor(userRepo: Repository<User>, jwtService: JwtService, configService: ConfigService);
+    constructor(userRepo: Repository<User>, jwtService: JwtService, configService: ConfigService, emailService: EmailService);
     register(dto: RegisterDto): Promise<TokenPair>;
     login(dto: LoginDto): Promise<TokenPair>;
     refresh(refreshToken: string): Promise<TokenPair>;
     logout(refreshToken: string): Promise<void>;
+    forgotPassword(email: string): Promise<void>;
+    resetPassword(token: string, newPassword: string): Promise<void>;
     private generateTokens;
     registerSeed(dto: RegisterDto): Promise<User>;
 }

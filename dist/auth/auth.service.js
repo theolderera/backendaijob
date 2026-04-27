@@ -52,17 +52,21 @@ const typeorm_2 = require("typeorm");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
 const bcrypt = __importStar(require("bcrypt"));
+const crypto = __importStar(require("crypto"));
 const uuid_1 = require("uuid");
 const user_entity_1 = require("../users/entities/user.entity");
+const email_service_1 = require("./email.service");
 let AuthService = class AuthService {
     userRepo;
     jwtService;
     configService;
+    emailService;
     refreshTokens = [];
-    constructor(userRepo, jwtService, configService) {
+    constructor(userRepo, jwtService, configService, emailService) {
         this.userRepo = userRepo;
         this.jwtService = jwtService;
         this.configService = configService;
+        this.emailService = emailService;
     }
     async register(dto) {
         const existing = await this.userRepo.findOne({ where: { email: dto.email } });
@@ -101,6 +105,33 @@ let AuthService = class AuthService {
     async logout(refreshToken) {
         this.refreshTokens = this.refreshTokens.filter((r) => r.token !== refreshToken);
     }
+    async forgotPassword(email) {
+        const user = await this.userRepo.findOne({ where: { email } });
+        if (!user)
+            return;
+        const rawToken = crypto.randomBytes(32).toString('hex');
+        const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+        const expiresMin = this.configService.get('PASSWORD_RESET_EXPIRES_MIN', 30);
+        const expires = new Date(Date.now() + expiresMin * 60 * 1000);
+        user.passwordResetToken = hashedToken;
+        user.passwordResetExpires = expires;
+        await this.userRepo.save(user);
+        await this.emailService.sendPasswordReset(user.email, rawToken, expiresMin);
+    }
+    async resetPassword(token, newPassword) {
+        const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+        const user = await this.userRepo.findOne({
+            where: { passwordResetToken: hashedToken },
+        });
+        if (!user || !user.passwordResetExpires || user.passwordResetExpires < new Date()) {
+            throw new common_1.BadRequestException('Token is invalid or has expired');
+        }
+        user.passwordHash = await bcrypt.hash(newPassword, 10);
+        user.passwordResetToken = null;
+        user.passwordResetExpires = null;
+        await this.userRepo.save(user);
+        this.refreshTokens = this.refreshTokens.filter((r) => r.userId !== user.id);
+    }
     generateTokens(user) {
         const payload = { sub: user.id, email: user.email, role: user.role };
         const token = this.jwtService.sign(payload);
@@ -131,6 +162,7 @@ exports.AuthService = AuthService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         jwt_1.JwtService,
-        config_1.ConfigService])
+        config_1.ConfigService,
+        email_service_1.EmailService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

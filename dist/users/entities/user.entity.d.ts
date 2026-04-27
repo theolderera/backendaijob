@@ -17,6 +17,8 @@ export declare class User {
     phoneNumber: string;
     passwordHash: string;
     role: UserRole;
+    passwordResetToken: string | null;
+    passwordResetExpires: Date | null;
     createdAt: Date;
     updatedAt: Date;
     profile: Profile;

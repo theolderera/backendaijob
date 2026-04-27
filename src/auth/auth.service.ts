@@ -6,10 +6,12 @@ import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 import { User, UserRole } from '../users/entities/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { EmailService } from './email.service';
 
 export interface TokenPair {
   token: string;
@@ -24,13 +26,13 @@ interface RefreshTokenRecord {
 
 @Injectable()
 export class AuthService {
-  // In-memory refresh token store (sufficient for SQLite dev mode)
   private refreshTokens: RefreshTokenRecord[] = [];
 
   constructor(
     @InjectRepository(User) private readonly userRepo: Repository<User>,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly emailService: EmailService,
   ) {}
 
   async register(dto: RegisterDto): Promise<TokenPair> {
@@ -77,6 +79,44 @@ export class AuthService {
     this.refreshTokens = this.refreshTokens.filter((r) => r.token !== refreshToken);
   }
 
+  async forgotPassword(email: string): Promise<void> {
+    const user = await this.userRepo.findOne({ where: { email } });
+    // Always return success to avoid leaking which emails are registered
+    if (!user) return;
+
+    const rawToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+
+    const expiresMin = this.configService.get<number>('PASSWORD_RESET_EXPIRES_MIN', 30);
+    const expires = new Date(Date.now() + expiresMin * 60 * 1000);
+
+    user.passwordResetToken = hashedToken;
+    user.passwordResetExpires = expires;
+    await this.userRepo.save(user);
+
+    await this.emailService.sendPasswordReset(user.email, rawToken, expiresMin);
+  }
+
+  async resetPassword(token: string, newPassword: string): Promise<void> {
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    const user = await this.userRepo.findOne({
+      where: { passwordResetToken: hashedToken },
+    });
+
+    if (!user || !user.passwordResetExpires || user.passwordResetExpires < new Date()) {
+      throw new BadRequestException('Token is invalid or has expired');
+    }
+
+    user.passwordHash = await bcrypt.hash(newPassword, 10);
+    user.passwordResetToken = null;
+    user.passwordResetExpires = null;
+    await this.userRepo.save(user);
+
+    // Revoke all active refresh tokens for security
+    this.refreshTokens = this.refreshTokens.filter((r) => r.userId !== user.id);
+  }
+
   private generateTokens(user: User): TokenPair {
     const payload = { sub: user.id, email: user.email, role: user.role };
     const token = this.jwtService.sign(payload);
@@ -89,7 +129,6 @@ export class AuthService {
     return { token, refreshToken };
   }
 
-  // Called by seed script to register users without throwing on duplicates
   async registerSeed(dto: RegisterDto): Promise<User> {
     const existing = await this.userRepo.findOne({ where: { email: dto.email } });
     if (existing) return existing;

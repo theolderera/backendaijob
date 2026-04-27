@@ -16,6 +16,8 @@ export declare class UsersService {
         email: string;
         phoneNumber: string;
         role: import("./entities/user.entity").UserRole;
+        passwordResetToken: string | null;
+        passwordResetExpires: Date | null;
         createdAt: Date;
         updatedAt: Date;
         profile: import("../profiles/entities/profile.entity").Profile;
