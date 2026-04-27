@@ -8,7 +8,7 @@ export declare class SkillsService {
     findAll(): Promise<Skill[]>;
     search(name: string): Promise<Skill[]>;
     findByUser(userId: number): Promise<UserSkill[]>;
-    addToUser(userId: number, skillId: number): Promise<UserSkill>;
+    addToUser(userId: number, skillId: number): Promise<UserSkill | null>;
     removeFromUser(userId: number, skillId: number): Promise<void>;
     ensureSkill(name: string): Promise<Skill>;
 }

@@ -35,6 +35,8 @@ let User = class User {
     passwordResetExpires;
     createdAt;
     updatedAt;
+    banUntil;
+    banReason;
     profile;
     posts;
     sentConnections;
@@ -85,6 +87,14 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
 ], User.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'datetime', nullable: true }),
+    __metadata("design:type", Object)
+], User.prototype, "banUntil", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "banReason", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => profile_entity_1.Profile, (profile) => profile.user, { nullable: true }),
     __metadata("design:type", profile_entity_1.Profile)

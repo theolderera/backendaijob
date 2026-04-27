@@ -4,7 +4,7 @@ export declare class AiController {
     constructor(service: AiService);
     ask(dto: {
         question: string;
-    }): Promise<{
+    }, req: any): Promise<{
         answer: string;
     }>;
     analyzeCv(dto: {

@@ -49,6 +49,12 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Column({ type: 'datetime', nullable: true })
+  banUntil: Date | null;
+
+  @Column({ nullable: true })
+  banReason: string;
+
   @OneToOne(() => Profile, (profile) => profile.user, { nullable: true })
   profile: Profile;
 

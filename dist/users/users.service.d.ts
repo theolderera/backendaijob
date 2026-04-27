@@ -20,6 +20,8 @@ export declare class UsersService {
         passwordResetExpires: Date | null;
         createdAt: Date;
         updatedAt: Date;
+        banUntil: Date | null;
+        banReason: string;
         profile: import("../profiles/entities/profile.entity").Profile;
         posts: import("../posts/entities/post.entity").Post[];
         sentConnections: import("../connections/entities/connection.entity").Connection[];

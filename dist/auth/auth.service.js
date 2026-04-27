@@ -90,6 +90,14 @@ let AuthService = class AuthService {
         const match = await bcrypt.compare(dto.password, user.passwordHash);
         if (!match)
             throw new common_1.UnauthorizedException('Invalid credentials');
+        if (user.banUntil && user.banUntil > new Date()) {
+            const minutesLeft = Math.ceil((user.banUntil.getTime() - Date.now()) / (60 * 1000));
+            throw new common_1.ForbiddenException({
+                message: 'USER_BANNED',
+                error: `Шумо то ҳол банд ҳастед. ${minutesLeft} дақиқа боқӣ монд. / Вы всё еще заблокированы. Осталось ${minutesLeft} мин. / You are still banned. ${minutesLeft} min left.`,
+                banUntil: user.banUntil,
+            });
+        }
         return this.generateTokens(user);
     }
     async refresh(refreshToken) {
@@ -100,6 +108,9 @@ let AuthService = class AuthService {
         const user = await this.userRepo.findOne({ where: { id: record.userId } });
         if (!user)
             throw new common_1.UnauthorizedException('User not found');
+        if (user.banUntil && user.banUntil > new Date()) {
+            throw new common_1.ForbiddenException('User is banned');
+        }
         return this.generateTokens(user);
     }
     async logout(refreshToken) {
@@ -133,7 +144,7 @@ let AuthService = class AuthService {
         this.refreshTokens = this.refreshTokens.filter((r) => r.userId !== user.id);
     }
     generateTokens(user) {
-        const payload = { sub: user.id, email: user.email, role: user.role };
+        const payload = { sub: user.id, email: user.email, role: user.role, fullName: user.fullName };
         const token = this.jwtService.sign(payload);
         const refreshToken = (0, uuid_1.v4)();
         const expiresAt = new Date();

@@ -4,23 +4,23 @@ import { UserSkill } from '../skills/entities/user-skill.entity';
 import { Experience } from '../experience/entities/experience.entity';
 import { Job } from '../jobs/entities/job.entity';
 import { Profile } from '../profiles/entities/profile.entity';
+import { User } from '../users/entities/user.entity';
 export declare class AiService {
     private readonly configService;
     private readonly userSkillRepo;
     private readonly expRepo;
     private readonly jobRepo;
     private readonly profileRepo;
-    private anthropicApiKey;
-    constructor(configService: ConfigService, userSkillRepo: Repository<UserSkill>, expRepo: Repository<Experience>, jobRepo: Repository<Job>, profileRepo: Repository<Profile>);
-    private callClaude;
-    private generateMockResponse;
-    ask(question: string): Promise<{
+    private readonly userRepo;
+    constructor(configService: ConfigService, userSkillRepo: Repository<UserSkill>, expRepo: Repository<Experience>, jobRepo: Repository<Job>, profileRepo: Repository<Profile>, userRepo: Repository<User>);
+    private detectLanguage;
+    private findBestMatch;
+    ask(question: string, userId: number): Promise<{
         answer: string;
     }>;
     analyzeCv(dto: {
         userId?: number;
         cvText?: string;
-        cvFileUrl?: string;
     }): Promise<{
         skills: string[];
         summary: string;

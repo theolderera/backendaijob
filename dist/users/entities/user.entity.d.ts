@@ -21,6 +21,8 @@ export declare class User {
     passwordResetExpires: Date | null;
     createdAt: Date;
     updatedAt: Date;
+    banUntil: Date | null;
+    banReason: string;
     profile: Profile;
     posts: Post[];
     sentConnections: Connection[];

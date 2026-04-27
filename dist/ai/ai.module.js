@@ -14,6 +14,7 @@ const user_skill_entity_1 = require("../skills/entities/user-skill.entity");
 const experience_entity_1 = require("../experience/entities/experience.entity");
 const job_entity_1 = require("../jobs/entities/job.entity");
 const profile_entity_1 = require("../profiles/entities/profile.entity");
+const user_entity_1 = require("../users/entities/user.entity");
 const ai_controller_1 = require("./ai.controller");
 const ai_service_1 = require("./ai.service");
 let AiModule = class AiModule {
@@ -23,7 +24,7 @@ exports.AiModule = AiModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule,
-            typeorm_1.TypeOrmModule.forFeature([user_skill_entity_1.UserSkill, experience_entity_1.Experience, job_entity_1.Job, profile_entity_1.Profile]),
+            typeorm_1.TypeOrmModule.forFeature([user_skill_entity_1.UserSkill, experience_entity_1.Experience, job_entity_1.Job, profile_entity_1.Profile, user_entity_1.User]),
         ],
         controllers: [ai_controller_1.AiController],
         providers: [ai_service_1.AiService],

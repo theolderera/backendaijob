@@ -31,10 +31,11 @@ export class SkillsService {
     const skill = await this.skillRepo.findOne({ where: { id: skillId } });
     if (!skill) throw new NotFoundException(`Skill #${skillId} not found`);
 
-    const existing = await this.userSkillRepo.findOne({ where: { userId, skillId } });
+    const existing = await this.userSkillRepo.findOne({ where: { userId, skillId }, relations: ['skill'] });
     if (existing) return existing;
 
-    return this.userSkillRepo.save(this.userSkillRepo.create({ userId, skillId }));
+    const saved = await this.userSkillRepo.save(this.userSkillRepo.create({ userId, skillId }));
+    return this.userSkillRepo.findOne({ where: { id: saved.id }, relations: ['skill'] });
   }
 
   async removeFromUser(userId: number, skillId: number) {

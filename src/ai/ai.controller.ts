@@ -1,5 +1,5 @@
 import {
-  Controller, Get, Post, Body, Param, ParseIntPipe, UseGuards,
+  Controller, Get, Post, Body, Param, ParseIntPipe, UseGuards, Req,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AiService } from './ai.service';
@@ -13,8 +13,9 @@ export class AiController {
   constructor(private readonly service: AiService) {}
 
   @Post('ask')
-  ask(@Body() dto: { question: string }) {
-    return this.service.ask(dto.question);
+  ask(@Body() dto: { question: string }, @Req() req: any) {
+    const userId = req.user.id;
+    return this.service.ask(dto.question, userId);
   }
 
   @Post('analyze-cv')

@@ -1,0 +1,328 @@
+export interface KnowledgeResponse {
+  tj: string;
+  ru: string;
+  en: string;
+}
+
+export interface KnowledgeItem {
+  id: string;
+  category: string;
+  keywords: string[];
+  responses: KnowledgeResponse;
+}
+
+export const KNOWLEDGE_BASE: KnowledgeItem[] = [
+  // ── GREETING & GENERAL ──────────────────────────────────────────────────
+  {
+    id: 'greeting',
+    category: 'general',
+    keywords: [
+      'салом',
+      'сало',
+      'hello',
+      'hi',
+      'hey',
+      'привет',
+      'здравствуй',
+      'хай',
+      'ку',
+    ],
+    responses: {
+      tj: 'Салом! Ман AI-ассистенти платформаи AI-JOB ҳастам. Ман метавонам ба шумо дар истифодаи платформа, пурра кардани профил, ёфтани кор ва истифодаи воситаҳои ИИ кӯмак кунам. Чӣ тавр ёрӣ расонам?',
+      ru: 'Привет! Я AI-ассистент платформы AI-JOB. Я могу помочь вам с использованием платформы, заполнением профиля, поиском работы и использованием AI-инструментов. Чем могу помочь?',
+      en: 'Hello! I am the AI-JOB platform assistant. I can help you navigate the platform, complete your profile, find jobs, and use our AI tools. How can I assist you today?',
+    },
+  },
+  {
+    id: 'what_is_ai_job',
+    category: 'general',
+    keywords: [
+      'ai-job',
+      'платформа',
+      'platform',
+      'плат',
+      'чист',
+      'what is',
+      'чӣ аст',
+      'проекти',
+    ],
+    responses: {
+      tj: 'AI-JOB — ин як платформаи муосири касбӣ (аналоги LinkedIn) мебошад, ки махсус барои бозори меҳнати Тоҷикистон сохта шудааст.\n\nИмкониятҳои асосӣ:\n• 👤 Сохтани профили касбӣ (Резюме)\n• 💼 Ҷустуҷӯи вакансияҳо ва ирсоли ариза\n• 🏢 Саҳифаҳои ширкат ва идоракунии вакансияҳо\n• 🤝 Шабакаи касбӣ ва робита бо мутахассисон\n• 💬 Мессенҷери дохилӣ\n• 🤖 Воситаҳои интеллектуалӣ (AI Hub)\n\nПлатформа бо истифода аз технологияҳои Next.js, NestJS ва SQLite сохта шудааст.',
+      ru: 'AI-JOB — это современная профессиональная платформа (аналог LinkedIn), созданная специально для рынка труда Таджикистана.\n\nОсновные возможности:\n• 👤 Создание профессионального профиля (Резюме)\n• 💼 Поиск вакансий и подача заявок\n• 🏢 Страницы компаний и управление вакансиями\n• 🤝 Профессиональная сеть и связи с экспертами\n• 💬 Встроенный мессенджер\n• 🤖 Интеллектуальные инструменты (AI Hub)\n\nПлатформа построена на стеке Next.js, NestJS и SQLite.',
+      en: 'AI-JOB is a modern professional networking platform (similar to LinkedIn) tailored specifically for the Tajikistan job market.\n\nKey Features:\n• 👤 Professional profile creation (Resume)\n• 💼 Job search and application management\n• 🏢 Company pages and job posting\n• 🤝 Professional networking and connections\n• 💬 Built-in messaging system\n• 🤖 AI Hub tools for career growth\n\nBuilt using Next.js, NestJS, and SQLite.',
+    },
+  },
+
+  // ── PROFILE ──────────────────────────────────────────────────────────────
+  {
+    id: 'profile_complete',
+    category: 'profile',
+    keywords: [
+      'профил',
+      'profile',
+      'profil',
+      'пурра',
+      'complete',
+      'заполнить',
+      'как сделать',
+    ],
+    responses: {
+      tj: 'Барои он ки профили шумо "босифат" ҳисобида шавад, ин амалҳоро иҷро кунед:\n\n1. **Акс илова кунед**: Дар Танзимот акси касбӣ бор кунед.\n2. **Тарҷумаи ҳол (Bio)**: Дар бораи худатон ва ҳадафҳоятон мухтасар нависед.\n3. **Таҷрибаи корӣ**: Ҳадди аққал як ҷои кори гузашта ё ҳозираро илова кунед.\n4. **Маълумот**: Дар бораи донишгоҳ ё курсҳои хатмкардаатон маълумот диҳед.\n5. **Маҳоратҳо**: На камтар аз 5 маҳорати асосии худро илова кунед.\n\nПрофили пурра имконияти диққати корфармоёнро 3 баробар зиёд мекунад!',
+      ru: 'Чтобы ваш профиль считался качественным, выполните следующие действия:\n\n1. **Добавьте фото**: Загрузите профессиональное фото в Настройках.\n2. **Биография (Bio)**: Кратко напишите о себе и своих целях.\n3. **Опыт работы**: Добавьте хотя бы одно место работы.\n4. **Образование**: Укажите университет или оконченные курсы.\n5. **Навыки**: Добавьте минимум 5 ключевых навыков.\n\nЗаполненный профиль в 3 раза повышает интерес со стороны работодателей!',
+      en: 'To make your profile stand out, follow these steps:\n\n1. **Add a photo**: Upload a professional photo in Settings.\n2. **Bio**: Write a brief summary of yourself and your goals.\n3. **Experience**: Add at least one past or current work position.\n4. **Education**: List your university or completed courses.\n5. **Skills**: Add at least 5 of your core skills.\n\nA complete profile increases employer interest by up to 3 times!',
+    },
+  },
+  {
+    id: 'profile_avatar',
+    category: 'profile',
+    keywords: [
+      'аватар',
+      'avatar',
+      'сурат',
+      'фото',
+      'photo',
+      'расм',
+      'иваз',
+      'change',
+    ],
+    responses: {
+      tj: 'Иваз кардани акси профил:\n\n1. Ба саҳифаи **Танзимот** (иконаи чархзананда ⚙️) равед.\n2. Дар бахши "Акси профил", тугмаи "Интихоби файл"-ро пахш кунед.\n3. Аксро интихоб кунед ва он ба таври худкор боргузорӣ мешавад.\n\nТавсия мешавад, ки акс формати JPG ё PNG ва ҳаҷмаш то 5МБ бошад.',
+      ru: 'Изменение фото профиля:\n\n1. Перейдите в раздел **Настройки** (иконка шестерёнки ⚙️).\n2. В блоке "Фото профиля" нажмите "Выбрать файл".\n3. Выберите изображение, и оно загрузится автоматически.\n\nРекомендуемый формат: JPG или PNG, размер до 5МБ.',
+      en: 'Changing your profile photo:\n\n1. Go to **Settings** (gear icon ⚙️).\n2. In the "Profile Photo" section, click "Choose File".\n3. Select an image, and it will be uploaded automatically.\n\nRecommended formats: JPG or PNG, max size 5MB.',
+    },
+  },
+
+  // ── JOBS ─────────────────────────────────────────────────────────────────
+  {
+    id: 'job_search',
+    category: 'jobs',
+    keywords: [
+      'кор',
+      'вакансия',
+      'job',
+      'работа',
+      'ваканс',
+      'ҷустуҷӯ',
+      'search',
+      'найти',
+    ],
+    responses: {
+      tj: 'Дар AI-JOB шумо метавонед корро бо чанд роҳ ёбед:\n\n1. **Каталоги умумӣ**: Ба бахши "Кор" равед ва рӯйхати ҳамаи вакансияҳоро бубинед.\n2. **Филтрҳо**: Аз филтрҳо аз рӯи ҷойгиршавӣ (Душанбе, Хуҷанд ва ғ.) ва намуди кор (Дурдаст, Пурвақт) истифода баред.\n3. **Тавсияҳои ИИ**: Дар саҳифаи "Кор" бахши "Тавсияшуда"-ро бубинед, ки дар он ҷо вакансияҳо дар асоси маҳоратҳои шумо интихоб шудаанд.\n\nБарои ирсоли ариза, танҳо тугмаи "Apply" (Ариза додан)-ро пахш кунед.',
+      ru: 'На AI-JOB вы можете найти работу несколькими способами:\n\n1. **Общий каталог**: Перейдите в раздел "Вакансии" и просмотрите список.\n2. **Фильтры**: Используйте фильтры по локации (Душанбе, Худжанд и т.д.) и типу занятости (Удалёнка, Полный день).\n3. **Рекомендации AI**: В разделе вакансий посмотрите вкладку "Рекомендовано" — там собраны вакансии, подходящие под ваши навыки.\n\nЧтобы откликнуться, просто нажмите кнопку "Откликнуться".',
+      en: 'You can find jobs on AI-JOB in several ways:\n\n1. **Job Directory**: Visit the "Jobs" section to browse all listings.\n2. **Filters**: Use filters for location (Dushanbe, Khujand, etc.) and employment type (Remote, Full-time).\n3. **AI Recommendations**: Check the "Recommended" tab in the Jobs section for positions that match your skills.\n\nTo apply, simply click the "Apply" button on any job post.',
+    },
+  },
+  {
+    id: 'job_apply_status',
+    category: 'jobs',
+    keywords: [
+      'ариза',
+      'отклик',
+      'apply',
+      'статус',
+      'қабул',
+      'rejected',
+      'accepted',
+    ],
+    responses: {
+      tj: 'Пас аз ирсоли ариза:\n\n• Шумо метавонед ҳолати онро дар бахши **"Аризаҳои ман"** (дар саҳифаи Кор) бубинед.\n• Ҳолатҳо: "Pending" (Интизорӣ), "Reviewed" (Дида баромада шуд), "Accepted" (Қабул шуд) ё "Rejected" (Рад шуд).\n• Вақте ки корфармо ҳолати аризаро иваз мекунад, шумо **Огоҳинома** мегиред.',
+      ru: 'После подачи заявки:\n\n• Вы можете отслеживать статус в разделе **"Мои отклики"** (на странице Вакансий).\n• Статусы: "В ожидании", "Рассмотрено", "Принято" или "Отклонено".\n• Вы получите **Уведомление**, когда работодатель изменит статус вашей заявки.',
+      en: 'After submitting an application:\n\n• You can track its status in the **"My Applications"** section on the Jobs page.\n• Statuses include: "Pending", "Reviewed", "Accepted", or "Rejected".\n• You will receive a **Notification** as soon as the employer updates your application status.',
+    },
+  },
+
+  // ── NETWORK ──────────────────────────────────────────────────────────────
+  {
+    id: 'network_connect',
+    category: 'network',
+    keywords: [
+      'шабака',
+      'network',
+      'сеть',
+      'пайваст',
+      'connect',
+      'подключ',
+      'дархост',
+      'друзья',
+    ],
+    responses: {
+      tj: 'Шабакаи касбӣ (Network) ба шумо кӯмак мекунад, ки бо мутахассисон робита барқарор кунед:\n\n1. Ба саҳифаи **"Шабака"** равед.\n2. Дар он ҷо "Одамоне, ки шумо шояд шиносед"-ро мебинед.\n3. Тугмаи **"Connect"**-ро пахш кунед, то дархост фиристед.\n4. Вақте ки онҳо дархостро қабул мекунанд, шумо метавонед ба ҳамдигар паём фиристед.\n\nДархостҳои воридшударо дар бахши "Pending Requests" тасдиқ кардан мумкин аст.',
+      ru: 'Профессиональная сеть помогает вам налаживать связи с экспертами:\n\n1. Перейдите на страницу **"Сеть"**.\n2. Там вы увидите список рекомендуемых контактов.\n3. Нажмите **"Подключиться"**, чтобы отправить запрос.\n4. Как только запрос примут, вы сможете переписываться.\n\nВходящие запросы можно подтвердить в блоке "Ожидающие запросы".',
+      en: 'Professional networking helps you connect with industry experts:\n\n1. Go to the **"Network"** page.\n2. You will see a list of "People you may know".\n3. Click **"Connect"** to send a connection request.\n4. Once they accept, you will be able to message each other.\n\nIncoming requests can be managed in the "Pending Requests" section.',
+    },
+  },
+
+  // ── MESSAGING ────────────────────────────────────────────────────────────
+  {
+    id: 'messaging_start',
+    category: 'messages',
+    keywords: [
+      'паём',
+      'message',
+      'сообщен',
+      'мессен',
+      'чат',
+      'chat',
+      'навиштан',
+    ],
+    responses: {
+      tj: 'Барои оғози сӯҳбат:\n\n1. Ба профили корбари дилхоҳ равед ва тугмаи **"Message"**-ро пахш кунед.\n2. Ё ба бахши умумии **"Messages"** (дар навбар) равед ва аз рӯйхати мухотибон касеро интихоб кунед.\n3. Паёмҳо дар вақти воқеӣ (real-time) фиристода мешаванд ва таърих сабт мегардад.',
+      ru: 'Чтобы начать чат:\n\n1. Перейдите в профиль пользователя и нажмите кнопку **"Сообщение"**.\n2. Или откройте раздел **"Сообщения"** в меню и выберите диалог из списка.\n3. Сообщения доставляются мгновенно, история переписки сохраняется.',
+      en: 'To start a conversation:\n\n1. Go to a user\'s profile and click the **"Message"** button.\n2. Or open the **"Messages"** section from the navigation bar and select a contact.\n3. Messages are delivered in real-time, and your chat history is automatically saved.',
+    },
+  },
+
+  // ── ORGANIZATION ─────────────────────────────────────────────────────────
+  {
+    id: 'organization_create',
+    category: 'organization',
+    keywords: [
+      'ширкат',
+      'ташкилот',
+      'organization',
+      'company',
+      'компания',
+      'сохтан',
+      'create',
+    ],
+    responses: {
+      tj: 'Агар шумо нақши **"Organization"** дошта бошед:\n\n1. Ба менюи профил (дар боло, рост) равед ва **"My Organization"**-ро интихоб кунед.\n2. Маълумоти ширкатро ворид кунед: Ном, соҳа, тавсиф ва логотип.\n3. Пас аз сохтан, шумо метавонед тугмаи **"Add Job"**-ро истифода бурда, вакансияҳои нав илова кунед.',
+      ru: 'Если у вас роль **"Организация"**:\n\n1. Откройте меню профиля (справа вверху) и выберите **"Моя организация"**.\n2. Введите данные: Название, отрасль, описание и логотип.\n3. После создания вы сможете публиковать вакансии через кнопку **"Добавить вакансию"**.',
+      en: 'If you have the **"Organization"** role:\n\n1. Open the profile menu (top right) and select **"My Organization"**.\n2. Enter company details: Name, industry, description, and logo.\n3. Once created, you can post new job openings using the **"Add Job"** button.',
+    },
+  },
+
+  // ── AI HUB ───────────────────────────────────────────────────────────────
+  {
+    id: 'ai_hub_tools',
+    category: 'ai',
+    keywords: [
+      'ai hub',
+      'инструмент',
+      'восита',
+      'таҳлил',
+      'cv',
+      'letter',
+      'анализ',
+      'кӯмаки ии',
+    ],
+    responses: {
+      tj: 'AI Hub — ин маҷмӯи воситаҳои интеллектуалӣ барои корбарон аст:\n\n1. **CV Analysis**: Матни резюмеи худро гузоред ва ИИ камбудиҳову маҳоратҳои шуморо таҳлил мекунад.\n2. **Skill Gap**: Муқоиса кунед, ки маҳоратҳои шумо ба талаботи вакансияи мушаххас чӣ қадар мувофиқат мекунанд.\n3. **Cover Letter Generator**: Дар асоси профили шумо ва талаботи кор, мактуби касбӣ омода мекунад.\n4. **Improve Job**: Барои корфармоён — матни вакансияро ҷолибтар ва касбӣ мегардонад.',
+      ru: 'AI Hub — это набор интеллектуальных инструментов:\n\n1. **Анализ CV**: Вставьте текст резюме, и AI проанализирует ваши навыки и даст советы.\n2. **Skill Gap**: Сравните свои навыки с требованиями конкретной вакансии.\n3. **Генератор Cover Letter**: Создаёт профессиональное сопроводительное письмо на основе вашего профиля.\n4. **Улучшение вакансии**: Для работодателей — делает описание вакансии более привлекательным.',
+      en: 'AI Hub is a collection of smart tools for your career:\n\n1. **CV Analysis**: Paste your resume text, and AI will analyze your skills and provide improvements.\n2. **Skill Gap**: Compare your current skills against the requirements of a specific job listing.\n3. **Cover Letter Generator**: Drafts a professional cover letter tailored to your profile and the target job.\n4. **Improve Job**: For employers — enhances job descriptions to make them more professional and engaging.',
+    },
+  },
+
+  // ── SETTINGS & THEME ─────────────────────────────────────────────────────
+  {
+    id: 'settings_theme',
+    category: 'settings',
+    keywords: [
+      'тема',
+      'theme',
+      'dark',
+      'light',
+      'тёмная',
+      'светлая',
+      'шаб',
+      'рӯз',
+      'ранг',
+    ],
+    responses: {
+      tj: 'Шумо метавонед намуди платформаро иваз кунед:\n\n1. Ба саҳифаи **Танзимот** равед.\n2. Дар бахши "Theme", байни **Light** (Рӯшан) ва **Dark** (Торик) интихоб кунед.\n3. Танзимот фавран амалӣ мешавад.',
+      ru: 'Вы можете изменить тему оформления:\n\n1. Перейдите в **Настройки**.\n2. В разделе "Тема" выберите **Light** (Светлая) или **Dark** (Тёмная).\n3. Изменения применятся мгновенно.',
+      en: 'You can change the platform appearance:\n\n1. Go to **Settings**.\n2. In the "Theme" section, choose between **Light** and **Dark** mode.\n3. Changes are applied immediately.',
+    },
+  },
+  {
+    id: 'settings_password',
+    category: 'settings',
+    keywords: [
+      'парол',
+      'password',
+      'пароль',
+      'иваз',
+      'reset',
+      'сброс',
+      'фаромӯш',
+    ],
+    responses: {
+      tj: 'Барои иваз кардани парол:\n\n1. Агар шумо дар дохили сайт бошед: Танзимот → Account Security → Change Password.\n2. Агар паролро фаромӯш кардед: Дар саҳифаи Login тугмаи **"Forgot Password?"**-ро пахш кунед, Email-и худро ворид кунед ва дастурҳоро аз почтаи худ пайравӣ кунед.',
+      ru: 'Для смены пароля:\n\n1. Если вы авторизованы: Настройки → Безопасность → Сменить пароль.\n2. Если забыли пароль: На странице входа нажмите **"Забыли пароль?"**, введите Email и следуйте инструкциям в письме.',
+      en: 'To change or reset your password:\n\n1. If logged in: Settings → Account Security → Change Password.\n2. If you forgot your password: Click **"Forgot Password?"** on the Login page, enter your email, and follow the instructions sent to your inbox.',
+    },
+  },
+
+  // ── TECH STACK & CREDITS ─────────────────────────────────────────────────
+  {
+    id: 'tech_stack',
+    category: 'general',
+    keywords: [
+      'технология',
+      'tech',
+      'stack',
+      'next',
+      'nest',
+      'sqlite',
+      'сохта шудааст',
+      'built with',
+    ],
+    responses: {
+      tj: 'Платформа бо истифода аз технологияҳои зерин сохта шудааст:\n\n• **Frontend**: Next.js 16.2 (App Router), React 19, Tailwind CSS v4, Framer Motion, Zustand.\n• **Backend**: NestJS 11, TypeORM, better-sqlite3.\n• **AI**: Модели дохилии таҳлилӣ ва коркарди матн.\n• **Пойгоҳи додаҳо**: SQLite.',
+      ru: 'Платформа разработана на следующем стеке:\n\n• **Frontend**: Next.js 16.2 (App Router), React 19, Tailwind CSS v4, Framer Motion, Zustand.\n• **Backend**: NestJS 11, TypeORM, better-sqlite3.\n• **AI**: Встроенная аналитическая модель обработки текста.\n• **База данных**: SQLite.',
+      en: 'The platform is built with the following technologies:\n\n• **Frontend**: Next.js 16.2 (App Router), React 19, Tailwind CSS v4, Framer Motion, Zustand.\n• **Backend**: NestJS 11, TypeORM, better-sqlite3.\n• **AI**: Custom internal analytical text processing logic.\n• **Database**: SQLite.',
+    },
+  },
+  // ── MISC ────────────────────────────────────────────────────────────────
+  {
+    id: 'logout',
+    category: 'general',
+    keywords: [
+      'баромадан',
+      'logout',
+      'выйти',
+      'выход',
+      'тарк кардан',
+      'quit',
+    ],
+    responses: {
+      tj: 'Барои баромадан аз система:\n\n1. Дар менюи болоӣ (дар тарафи рост) ба болои акси профили худ пахш кунед.\n2. Аз рӯйхати кушодашуда тугмаи **"Logout"**-ро интихоб кунед.\n\nШумо фавран аз система хориҷ мешавед ва ба саҳифаи Login равона мегардед.',
+      ru: 'Чтобы выйти из системы:\n\n1. В верхнем меню (справа) нажмите на фото своего профиля.\n2. В выпадающем списке выберите пункт **"Logout"** (Выйти).\n\nВы будете мгновенно перенаправлены на страницу входа.',
+      en: 'To log out of the system:\n\n1. Click on your profile picture in the top navigation bar (right side).\n2. Select **"Logout"** from the dropdown menu.\n\nYou will be immediately logged out and redirected to the Login page.',
+    },
+  },
+  {
+    id: 'notifications',
+    category: 'general',
+    keywords: [
+      'огоҳинома',
+      'уведомления',
+      'notifications',
+      'хабарҳо',
+      'огоҳӣ',
+      'звонок',
+      'икона',
+    ],
+    responses: {
+      tj: 'Шумо дар ҳолатҳои зерин огоҳинома мегиред:\n\n• Вақте касе ба шумо дархости "Connect" мефиристад.\n• Вақте паёми нав мегиред.\n• Вақте ҳолати аризаи шумо (job application) иваз мешавад.\n\nОгоҳиномаҳоро дар менюи болоӣ бо иконаи **Зангула (🔔)** дидан мумкин аст.',
+      ru: 'Вы получаете уведомления в следующих случаях:\n\n• Когда кто-то отправляет вам запрос на "Подключение".\n• Когда вы получаете новое сообщение.\n• Когда меняется статус вашего отклика на вакансию.\n\nУведомления можно посмотреть в верхнем меню, нажав на иконку **Колокольчика (🔔)**.',
+      en: 'You will receive notifications for:\n\n• New connection requests.\n• New direct messages.\n• Updates to your job application status.\n\nYou can access your notifications by clicking the **Bell icon (🔔)** in the top navigation bar.',
+    },
+  },
+  {
+    id: 'search_users',
+    category: 'network',
+    keywords: [
+      'ҷустуҷӯи одамон',
+      'поиск людей',
+      'find users',
+      'search people',
+      'ёфтани мутахассис',
+    ],
+    responses: {
+      tj: 'Барои ёфтани дигар корбарон:\n\n1. Ба саҳифаи **"Network"** равед.\n2. Дар он ҷо рӯйхати одамонро мебинед.\n3. Шумо инчунин метавонед аз сатри ҷустуҷӯ (агар фаъол бошад) барои ёфтани мутахассисон аз рӯи ном ё маҳорат истифода баред.',
+      ru: 'Чтобы найти других пользователей:\n\n1. Перейдите на страницу **"Сеть"** (Network).\n2. Там представлен список рекомендуемых пользователей.\n3. Вы также можете использовать поиск по имени или навыкам, чтобы найти нужных специалистов.',
+      en: 'To find other users:\n\n1. Go to the **"Network"** page.\n2. You will see a list of recommended professionals.\n3. You can also search for people by their name or skills to build your professional circle.',
+    },
+  },
+];

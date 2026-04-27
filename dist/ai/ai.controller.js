@@ -22,8 +22,9 @@ let AiController = class AiController {
     constructor(service) {
         this.service = service;
     }
-    ask(dto) {
-        return this.service.ask(dto.question);
+    ask(dto, req) {
+        const userId = req.user.id;
+        return this.service.ask(dto.question, userId);
     }
     analyzeCv(dto) {
         return this.service.analyzeCv(dto);
@@ -45,8 +46,9 @@ exports.AiController = AiController;
 __decorate([
     (0, common_1.Post)('ask'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], AiController.prototype, "ask", null);
 __decorate([
