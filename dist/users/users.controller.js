@@ -18,6 +18,7 @@ const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const users_service_1 = require("./users.service");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
+const current_user_decorator_1 = require("../auth/decorators/current-user.decorator");
 class UpdateUserDto {
     fullName;
     phoneNumber;
@@ -37,9 +38,16 @@ let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
     }
+    async getMe(user) {
+        const userFull = await this.usersService.findById(user.id);
+        if (!userFull)
+            return null;
+        const { passwordHash: _unused, ...safe } = userFull;
+        return safe;
+    }
     async directory() {
         const users = await this.usersService.findAll();
-        return users.map(({ passwordHash, ...u }) => ({
+        return users.map((u) => ({
             id: u.id,
             fullName: u.fullName,
             userName: u.email.split('@')[0],
@@ -59,6 +67,14 @@ let UsersController = class UsersController {
     }
 };
 exports.UsersController = UsersController;
+__decorate([
+    (0, common_1.Get)('me'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get current user profile (who am I)' }),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "getMe", null);
 __decorate([
     (0, common_1.Get)('directory'),
     (0, swagger_1.ApiOperation)({ summary: 'Get all users (directory)' }),
