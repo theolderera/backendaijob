@@ -23,7 +23,6 @@ const job_entity_1 = require("../jobs/entities/job.entity");
 const profile_entity_1 = require("../profiles/entities/profile.entity");
 const user_entity_1 = require("../users/entities/user.entity");
 const knowledge_base_1 = require("./knowledge-base");
-const profanity_list_1 = require("./profanity-list");
 let AiService = class AiService {
     configService;
     userSkillRepo;
@@ -73,18 +72,6 @@ let AiService = class AiService {
         return maxScore >= 1 ? bestMatch : null;
     }
     async ask(question, userId) {
-        if ((0, profanity_list_1.hasProfanity)(question)) {
-            const banDuration = 30 * 60 * 1000;
-            const banUntil = new Date(Date.now() + banDuration);
-            await this.userRepo.update(userId, {
-                banUntil: banUntil,
-                banReason: 'Истифодаи калимаҳои ноҷоиз / Использование нецензурной лексики / Profanity usage',
-            });
-            throw new common_1.ForbiddenException({
-                message: 'PROFANE_CONTENT_DETECTED',
-                error: 'Шумо барои 30 дақиқа аз система хориҷ карда шудед. / Вы были заблокированы на 30 минут. / You have been banned for 30 minutes.',
-            });
-        }
         const lang = this.detectLanguage(question);
         const match = this.findBestMatch(question);
         if (match) {

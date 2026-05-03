@@ -1,5 +1,5 @@
 import {
-  Injectable, UnauthorizedException, ConflictException, BadRequestException, ForbiddenException,
+  Injectable, UnauthorizedException, ConflictException, BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -58,15 +58,6 @@ export class AuthService {
     const match = await bcrypt.compare(dto.password, user.passwordHash);
     if (!match) throw new UnauthorizedException('Invalid credentials');
 
-    if (user.banUntil && user.banUntil > new Date()) {
-      const minutesLeft = Math.ceil((user.banUntil.getTime() - Date.now()) / (60 * 1000));
-      throw new ForbiddenException({
-        message: 'USER_BANNED',
-        error: `Шумо то ҳол банд ҳастед. ${minutesLeft} дақиқа боқӣ монд. / Вы всё еще заблокированы. Осталось ${minutesLeft} мин. / You are still banned. ${minutesLeft} min left.`,
-        banUntil: user.banUntil,
-      });
-    }
-
     return this.generateTokens(user);
   }
 
@@ -80,10 +71,6 @@ export class AuthService {
 
     const user = await this.userRepo.findOne({ where: { id: record.userId } });
     if (!user) throw new UnauthorizedException('User not found');
-
-    if (user.banUntil && user.banUntil > new Date()) {
-      throw new ForbiddenException('User is banned');
-    }
 
     return this.generateTokens(user);
   }

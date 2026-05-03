@@ -1,4 +1,4 @@
-import { Injectable, ForbiddenException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -8,7 +8,7 @@ import { Job } from '../jobs/entities/job.entity';
 import { Profile } from '../profiles/entities/profile.entity';
 import { User } from '../users/entities/user.entity';
 import { KNOWLEDGE_BASE, KnowledgeItem } from './knowledge-base';
-import { hasProfanity } from './profanity-list';
+
 
 @Injectable()
 export class AiService {
@@ -59,22 +59,6 @@ export class AiService {
   }
 
   async ask(question: string, userId: number): Promise<{ answer: string }> {
-    // 1. Check for profanity
-    if (hasProfanity(question)) {
-      const banDuration = 30 * 60 * 1000; // 30 minutes
-      const banUntil = new Date(Date.now() + banDuration);
-      
-      await this.userRepo.update(userId, {
-        banUntil: banUntil,
-        banReason: 'Истифодаи калимаҳои ноҷоиз / Использование нецензурной лексики / Profanity usage',
-      });
-
-      throw new ForbiddenException({
-        message: 'PROFANE_CONTENT_DETECTED',
-        error: 'Шумо барои 30 дақиқа аз система хориҷ карда шудед. / Вы были заблокированы на 30 минут. / You have been banned for 30 minutes.',
-      });
-    }
-
     const lang = this.detectLanguage(question);
     const match = this.findBestMatch(question);
 
