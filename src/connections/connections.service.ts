@@ -1,5 +1,5 @@
 import {
-  Injectable, NotFoundException, ConflictException, BadRequestException,
+  Injectable, NotFoundException, ConflictException, BadRequestException, ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Or } from 'typeorm';
@@ -89,6 +89,9 @@ export class ConnectionsService {
   async respond(id: number, userId: number, accept: boolean) {
     const conn = await this.repo.findOne({ where: { id } });
     if (!conn) throw new NotFoundException();
+    if (conn.addresseeId !== userId) {
+      throw new ForbiddenException('Not your connection request');
+    }
     conn.status = accept ? ConnectionStatus.Accepted : ConnectionStatus.Rejected;
     const saved = await this.repo.save(conn);
 
@@ -105,7 +108,12 @@ export class ConnectionsService {
     return saved;
   }
 
-  async remove(id: number) {
+  async remove(id: number, userId: number) {
+    const conn = await this.repo.findOne({ where: { id } });
+    if (!conn) throw new NotFoundException();
+    if (conn.requesterId !== userId && conn.addresseeId !== userId) {
+      throw new ForbiddenException('Not your connection');
+    }
     await this.repo.delete(id);
   }
 }

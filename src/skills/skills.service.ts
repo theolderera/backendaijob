@@ -9,7 +9,7 @@ export class SkillsService {
   constructor(
     @InjectRepository(Skill) private readonly skillRepo: Repository<Skill>,
     @InjectRepository(UserSkill) private readonly userSkillRepo: Repository<UserSkill>,
-  ) {}
+  ) { }
 
   findAll() {
     return this.skillRepo.find({ order: { name: 'ASC' } });

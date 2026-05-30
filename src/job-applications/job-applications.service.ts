@@ -1,5 +1,5 @@
 import {
-  Injectable, NotFoundException, ConflictException,
+  Injectable, NotFoundException, ConflictException, ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -29,6 +29,14 @@ export class JobApplicationsService {
     });
   }
 
+  async findByOrganization(orgId: number) {
+    return this.repo.find({
+      where: { job: { organizationId: orgId } },
+      order: { createdAt: 'DESC' },
+      relations: ['job', 'user'],
+    });
+  }
+
   async apply(userId: number, jobId: number, coverLetter?: string) {
     const existing = await this.repo.findOne({ where: { userId, jobId } });
     if (existing) throw new ConflictException('Already applied to this job');
@@ -42,9 +50,12 @@ export class JobApplicationsService {
     return this.repo.save(app);
   }
 
-  async updateStatus(id: number, status: ApplicationStatus) {
-    const app = await this.repo.findOne({ where: { id }, relations: ['job'] });
+  async updateStatus(id: number, status: ApplicationStatus, currentUserId: number) {
+    const app = await this.repo.findOne({ where: { id }, relations: ['job', 'job.organization'] });
     if (!app) throw new NotFoundException();
+    if (app.job?.organization?.ownerId !== currentUserId) {
+      throw new ForbiddenException('You do not own this organization');
+    }
     app.status = status;
     const saved = await this.repo.save(app);
 
@@ -59,9 +70,12 @@ export class JobApplicationsService {
     return saved;
   }
 
-  async remove(id: number) {
-    const app = await this.repo.findOne({ where: { id } });
+  async remove(id: number, currentUserId: number) {
+    const app = await this.repo.findOne({ where: { id }, relations: ['job', 'job.organization'] });
     if (!app) throw new NotFoundException();
+    if (app.userId !== currentUserId && app.job?.organization?.ownerId !== currentUserId) {
+      throw new ForbiddenException('Not authorized to delete this application');
+    }
     await this.repo.delete(id);
   }
 }

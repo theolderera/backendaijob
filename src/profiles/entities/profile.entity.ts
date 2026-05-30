@@ -41,6 +41,12 @@ export class Profile {
   @Column({ nullable: true, default: false })
   openToWork: boolean;
 
+  @Column({ default: 0 })
+  viewersCount: number;
+
+  @Column({ nullable: true })
+  cvUrl: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

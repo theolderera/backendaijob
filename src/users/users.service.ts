@@ -9,8 +9,14 @@ export class UsersService {
     @InjectRepository(User) private readonly userRepo: Repository<User>,
   ) {}
 
-  async findAll(): Promise<User[]> {
-    return this.userRepo.find();
+  async findAll(search?: string): Promise<User[]> {
+    if (!search) {
+      return this.userRepo.find();
+    }
+    return this.userRepo.createQueryBuilder('user')
+      .where('user.fullName ILIKE :search', { search: `%${search}%` })
+      .orWhere('user.email ILIKE :search', { search: `%${search}%` })
+      .getMany();
   }
 
   async findById(id: number): Promise<User> {

@@ -41,4 +41,31 @@ export class UploadController {
     const url = `/uploads/${file.filename}`;
     return { url };
   }
+
+  @Post('cv')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } } } })
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: join(process.cwd(), 'uploads'),
+        filename: (_req, file, cb) => {
+          const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+          cb(null, `${unique}${extname(file.originalname)}`);
+        },
+      }),
+      limits: { fileSize: 10 * 1024 * 1024 },
+      fileFilter: (_req, file, cb) => {
+        if (!file.mimetype.match(/pdf|msword|wordprocessingml/)) {
+          return cb(new BadRequestException('Only PDF and Word files allowed'), false);
+        }
+        cb(null, true);
+      },
+    }),
+  )
+  uploadCv(@UploadedFile() file: Express.Multer.File) {
+    if (!file) throw new BadRequestException('No file provided');
+    const url = `/uploads/${file.filename}`;
+    return { url };
+  }
 }

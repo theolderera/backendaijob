@@ -3,18 +3,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Profile } from './entities/profile.entity';
 import { CreateProfileDto, UpdateProfileDto } from './dto/profile.dto';
+import { Connection, ConnectionStatus } from '../connections/entities/connection.entity';
 
 @Injectable()
 export class ProfilesService {
   constructor(
     @InjectRepository(Profile) private readonly profileRepo: Repository<Profile>,
+    @InjectRepository(Connection) private readonly connectionRepo: Repository<Connection>,
   ) {}
 
   async findByUserId(userId: number): Promise<Profile | null> {
-    return this.profileRepo.findOne({
+    const profile = await this.profileRepo.findOne({
       where: { userId },
       relations: ['user', 'profileLanguages', 'profileLanguages.language'],
     });
+    if (profile) {
+      await this.profileRepo.increment({ id: profile.id }, 'viewersCount', 1);
+    }
+    return profile;
   }
 
   async findById(id: number): Promise<Profile> {
@@ -44,5 +50,19 @@ export class ProfilesService {
     }
     const profile = this.profileRepo.create({ ...dto, userId });
     return this.profileRepo.save(profile);
+  }
+
+  async getAnalytics(userId: number) {
+    const profile = await this.profileRepo.findOne({ where: { userId } });
+    const connectionsCount = await this.connectionRepo.count({
+      where: [
+        { requesterId: userId, status: ConnectionStatus.Accepted },
+        { addresseeId: userId, status: ConnectionStatus.Accepted },
+      ]
+    });
+    return {
+      viewersCount: profile?.viewersCount || 0,
+      connectionsCount
+    };
   }
 }

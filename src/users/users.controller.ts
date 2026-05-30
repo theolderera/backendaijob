@@ -1,5 +1,5 @@
 import {
-  Controller, Get, Patch, Param, ParseIntPipe, UseGuards, Body,
+  Controller, Get, Patch, Param, ParseIntPipe, UseGuards, Body, Query
 } from '@nestjs/common';
 import {
   ApiTags, ApiOperation, ApiBearerAuth,
@@ -33,8 +33,8 @@ export class UsersController {
 
   @Get('directory')
   @ApiOperation({ summary: 'Get all users (directory)' })
-  async directory() {
-    const users = await this.usersService.findAll();
+  async directory(@Query('search') search?: string) {
+    const users = await this.usersService.findAll(search);
     return users.map((u: User) => ({
       id: u.id,
       fullName: u.fullName,

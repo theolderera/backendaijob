@@ -1,5 +1,5 @@
 import {
-  Controller, Get, Post, Put, Body, Param, ParseIntPipe, UseGuards,
+  Controller, Get, Post, Put, Body, Param, ParseIntPipe, UseGuards, Query,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { OrganizationsService } from './organizations.service';
@@ -15,8 +15,8 @@ export class OrganizationsController {
   constructor(private readonly service: OrganizationsService) {}
 
   @Get()
-  findAll() {
-    return this.service.findAll();
+  findAll(@Query('search') search?: string) {
+    return this.service.findAll(search);
   }
 
   @Get('mine')

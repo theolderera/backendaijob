@@ -1,0 +1,43 @@
+[2026-05-30T13:37:42.380Z] findByUser called with userId: 23 (number)
+Found results length: 0
+Results: []
+
+[2026-05-30T13:37:48.048Z] findByUser called with userId: 23 (number)
+Found results length: 0
+Results: []
+
+[2026-05-30T13:37:58.626Z] addToUser: existing found: {"id":1,"userId":6,"skillId":1,"skill":{"id":1,"name":"JavaScript"}}
+[2026-05-30T13:37:58.645Z] findByUser called with userId: 23 (number)
+Found results length: 0
+Results: []
+
+[2026-05-30T13:38:05.045Z] addToUser: existing found: {"id":1,"userId":6,"skillId":1,"skill":{"id":1,"name":"JavaScript"}}
+[2026-05-30T13:38:05.061Z] findByUser called with userId: 23 (number)
+Found results length: 0
+Results: []
+
+[2026-05-30T13:38:07.177Z] addToUser: existing found: {"id":1,"userId":6,"skillId":1,"skill":{"id":1,"name":"JavaScript"}}
+[2026-05-30T13:38:07.193Z] findByUser called with userId: 23 (number)
+Found results length: 0
+Results: []
+
+[2026-05-30T13:38:25.550Z] addToUser: existing found: {"id":1,"userId":6,"skillId":1,"skill":{"id":1,"name":"JavaScript"}}
+[2026-05-30T13:38:25.565Z] findByUser called with userId: 23 (number)
+Found results length: 0
+Results: []
+
+[2026-05-30T13:38:35.735Z] addToUser: existing found: {"id":1,"userId":6,"skillId":1,"skill":{"id":1,"name":"JavaScript"}}
+[2026-05-30T13:38:35.751Z] findByUser called with userId: 23 (number)
+Found results length: 0
+Results: []
+
+[2026-05-30T13:39:02.423Z] addToUser: existing found: {"id":1,"userId":6,"skillId":1,"skill":{"id":1,"name":"JavaScript"}}
+[2026-05-30T13:39:02.439Z] findByUser called with userId: 23 (number)
+Found results length: 0
+Results: []
+
+[2026-05-30T13:39:12.877Z] addToUser: existing found: {"id":1,"userId":6,"skillId":1,"skill":{"id":1,"name":"JavaScript"}}
+[2026-05-30T13:39:12.896Z] findByUser called with userId: 23 (number)
+Found results length: 0
+Results: []
+

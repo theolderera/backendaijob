@@ -21,6 +21,12 @@ export class ProfilesController {
     return profile ?? null;
   }
 
+  @Get(':userId/analytics')
+  @ApiOperation({ summary: 'Get profile analytics' })
+  async getAnalytics(@Param('userId', ParseIntPipe) userId: number) {
+    return this.profilesService.getAnalytics(userId);
+  }
+
   @Post()
   @ApiOperation({ summary: 'Create or upsert profile' })
   async create(

@@ -1,11 +1,12 @@
 import {
-  Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn,
+  Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, Unique
 } from 'typeorm';
-import { Organization } from './organization.entity';
+import { Organization } from '../../organizations/entities/organization.entity';
 import { User } from '../../users/entities/user.entity';
 
 @Entity('organization_members')
-export class OrgMember {
+@Unique(['organizationId', 'userId'])
+export class OrganizationMember {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -15,11 +16,11 @@ export class OrgMember {
   @Column()
   userId: number;
 
-  @Column({ default: 'Member' })
+  @Column({ type: 'varchar', default: 'Employee' })
   role: string;
 
-  @Column({ default: 'Pending' })
-  status: string;
+  @Column({ type: 'varchar', default: 'Pending' })
+  status: string; // 'Pending', 'Accepted', 'Rejected'
 
   @CreateDateColumn()
   joinedAt: Date;

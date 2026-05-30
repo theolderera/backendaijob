@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Notification } from './entities/notification.entity';
@@ -36,18 +36,22 @@ export class NotificationsService {
     return this.repo.save(notif);
   }
 
-  async markRead(id: number) {
-    await this.repo.update(id, { isRead: true });
+  async markRead(id: number, currentUserId: number) {
     const n = await this.repo.findOne({ where: { id } });
     if (!n) throw new NotFoundException();
-    return n;
+    if (n.userId !== currentUserId) throw new ForbiddenException('Not your notification');
+    await this.repo.update(id, { isRead: true });
+    return { ...n, isRead: true };
   }
 
   async markAllRead(userId: number) {
     await this.repo.update({ userId, isRead: false }, { isRead: true });
   }
 
-  async remove(id: number) {
+  async remove(id: number, currentUserId: number) {
+    const n = await this.repo.findOne({ where: { id } });
+    if (!n) throw new NotFoundException();
+    if (n.userId !== currentUserId) throw new ForbiddenException('Not your notification');
     await this.repo.delete(id);
   }
 }

@@ -25,6 +25,11 @@ export class JobApplicationsController {
     return this.service.findByJob(jobId);
   }
 
+  @Get('by-organization/:orgId')
+  findByOrganization(@Param('orgId', ParseIntPipe) orgId: number) {
+    return this.service.findByOrganization(orgId);
+  }
+
   @Post()
   apply(
     @CurrentUser() user: CurrentUserPayload,
@@ -37,13 +42,17 @@ export class JobApplicationsController {
   updateStatus(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: { status: ApplicationStatus },
+    @CurrentUser() user: CurrentUserPayload,
   ) {
-    return this.service.updateStatus(id, dto.status);
+    return this.service.updateStatus(id, dto.status, user.id);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.service.remove(id);
+  remove(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser() user: CurrentUserPayload,
+  ) {
+    return this.service.remove(id, user.id);
   }
 }
