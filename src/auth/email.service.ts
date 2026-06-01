@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 
@@ -78,11 +78,11 @@ export class EmailService {
         `,
       });
       this.logger.log(`Reset email sent to ${to}`);
-    } catch (err) {
+    } catch (err: any) {
       this.logger.error(
-        `Failed to send email to ${to}: ${(err as Error).message}`,
+        `Failed to send email to ${to}: ${err.message}`,
       );
-      throw err;
+      throw new BadRequestException('Хатогӣ ҳангоми фиристодани почта: ' + err.message);
     }
   }
 }

@@ -14,8 +14,8 @@ export class UsersService {
       return this.userRepo.find();
     }
     return this.userRepo.createQueryBuilder('user')
-      .where('user.fullName ILIKE :search', { search: `%${search}%` })
-      .orWhere('user.email ILIKE :search', { search: `%${search}%` })
+      .where('user.fullName LIKE :search', { search: `%${search}%` })
+      .orWhere('user.email LIKE :search', { search: `%${search}%` })
       .getMany();
   }
 

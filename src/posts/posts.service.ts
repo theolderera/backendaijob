@@ -2,12 +2,13 @@ import {
   Injectable, NotFoundException, ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { Post } from './entities/post.entity';
 import { Like } from './entities/like.entity';
 import { Comment } from './entities/comment.entity';
 import { CreatePostDto, UpdatePostDto, CreateCommentDto } from './dto/post.dto';
 import { NotificationsService } from '../notifications/notifications.service';
+import { ConnectionsService } from '../connections/connections.service';
 
 @Injectable()
 export class PostsService {
@@ -16,6 +17,7 @@ export class PostsService {
     @InjectRepository(Like) private readonly likeRepo: Repository<Like>,
     @InjectRepository(Comment) private readonly commentRepo: Repository<Comment>,
     private readonly notificationsService: NotificationsService,
+    private readonly connectionsService: ConnectionsService,
   ) {}
 
   private async toFeedItem(post: Post, currentUserId: number) {
@@ -43,6 +45,20 @@ export class PostsService {
   }
 
   async getFeed(currentUserId: number) {
+    const conns = await this.connectionsService.findMy(currentUserId);
+    const connectionIds = conns.map(c => c.otherUser?.id).filter(id => id != null) as number[];
+    const userIds = [currentUserId, ...connectionIds];
+
+    const posts = await this.postRepo.find({
+      where: { userId: In(userIds) },
+      order: { createdAt: 'DESC' },
+      relations: ['user', 'user.profile'],
+      take: 50,
+    });
+    return Promise.all(posts.map((p) => this.toFeedItem(p, currentUserId)));
+  }
+
+  async getAllPosts(currentUserId: number) {
     const posts = await this.postRepo.find({
       order: { createdAt: 'DESC' },
       relations: ['user', 'user.profile'],

@@ -22,7 +22,7 @@ export class PostsController {
 
   @Get()
   getAll(@CurrentUser() user: CurrentUserPayload) {
-    return this.service.getFeed(user.id);
+    return this.service.getAllPosts(user.id);
   }
 
   @Get(':id')

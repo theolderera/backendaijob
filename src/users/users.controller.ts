@@ -2,7 +2,7 @@ import {
   Controller, Get, Patch, Param, ParseIntPipe, UseGuards, Body, Query
 } from '@nestjs/common';
 import {
-  ApiTags, ApiOperation, ApiBearerAuth,
+  ApiTags, ApiOperation, ApiBearerAuth, ApiQuery
 } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 import { UsersService } from './users.service';
@@ -33,6 +33,7 @@ export class UsersController {
 
   @Get('directory')
   @ApiOperation({ summary: 'Get all users (directory)' })
+  @ApiQuery({ name: 'search', required: false, type: String })
   async directory(@Query('search') search?: string) {
     const users = await this.usersService.findAll(search);
     return users.map((u: User) => ({
