@@ -50,20 +50,36 @@ import { OrgMember } from './organizations/entities/org-member.entity';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'better-sqlite3' as any,
-        database: config.get<string>('DB_PATH', './database.sqlite'),
-        entities: [
+      useFactory: (config: ConfigService) => {
+        const dbUrl = config.get<string>('DATABASE_URL');
+        const entities = [
           User, Profile, Experience, Education,
           Skill, UserSkill, Language, ProfileLanguage,
           Post, Like, Comment,
           Connection, Conversation, Message,
           Notification, Job, JobApplication,
           Organization, OrgMember,
-        ],
-        synchronize: true,
-        logging: false,
-      }),
+        ];
+
+        if (dbUrl) {
+          return {
+            type: 'postgres',
+            url: dbUrl,
+            entities,
+            synchronize: true,
+            ssl: { rejectUnauthorized: false },
+            logging: false,
+          };
+        }
+
+        return {
+          type: 'better-sqlite3' as any,
+          database: config.get<string>('DB_PATH', './database.sqlite'),
+          entities,
+          synchronize: true,
+          logging: false,
+        };
+      },
     }),
 
     ServeStaticModule.forRoot({
